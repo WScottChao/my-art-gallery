@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -10,13 +11,15 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import logo from '../assets/images/header-logo.png';
+import logo from '../assets/images/header-logo.png'; // Logo image for the app
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import ForgotPassword from '../components/ForgotPassword';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import ForgotPassword from '../components/ForgotPassword'; // Forgot password component
+import { useNavigate } from 'react-router-dom'; // For navigation
+import axios from 'axios'; // For API requests
+import { AuthContext } from '../context/AuthContext';
 
+// Styled Card for the login form
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -28,9 +31,10 @@ const StyledCard = styled(Card)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     maxWidth: '450px',
   },
-  boxShadow: theme.shadows[2],
+  boxShadow: theme.shadows[2], // Slight shadow for better visibility
 }));
 
+// Container for the SignIn page
 const SignInContainer = styled(Box)(({ theme }) => ({
   height: '100vh',
   display: 'flex',
@@ -41,44 +45,57 @@ const SignInContainer = styled(Box)(({ theme }) => ({
 }));
 
 export default function SignIn() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // For navigation
+  const { login } = useContext(AuthContext);
+
+  // Redirect to the home page when the logo is clicked
   const handleLogoClick = () => {
-    navigate('/'); // Navigate back to the home page
+    navigate('/'); // Navigate to the home page
   };
+
+  // Forgot password modal state
   const [openForgotPassword, setOpenForgotPassword] = React.useState(false);
 
   const handleForgotPasswordOpen = () => setOpenForgotPassword(true);
   const handleForgotPasswordClose = () => setOpenForgotPassword(false);
 
+  // Handle form submission for login
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent page refresh
     const data = new FormData(event.currentTarget);
-  
+
+    // Prepare login data for API request
     const loginData = {
       username: data.get('email'),
       password: data.get('password'),
     };
-  
+
     try {
+      // Make POST request to the login API
       const response = await axios.post('http://localhost:8083/api/lowCode/sys/login', loginData);
-      console.log('Login successful:', response.data);
-  
-      // Save token，go to Home
+      console.log('Sign in successful:', response.data);
+
+      // Save the token to localStorage
       localStorage.setItem('token', response.data.token);
-      alert('Sign in successful!');
-      navigate('/'); // Go to Home
+      login(response.data.username);
+
+      alert('Sign in successful!'); // Show success message
+      navigate('/'); // Redirect to the home page
     } catch (error) {
-      console.error('Login failed:', error);
-      alert('Login failed: Invalid username or password');
+      console.error('Sign in failed:', error);
+      alert('Sign in failed: Invalid username or password'); // Show error message
     }
   };
 
   return (
     <React.Fragment>
+      {/* Reset global CSS */}
       <CssBaseline />
+
       <SignInContainer>
+        {/* Login Form Card */}
         <StyledCard>
-          {/* Logo with click handler */}
+          {/* Logo - Clickable to return to the home page */}
           <Box
             sx={{ display: 'flex', justifyContent: 'center', mb: 2, cursor: 'pointer' }}
             onClick={handleLogoClick}
@@ -91,7 +108,7 @@ export default function SignIn() {
             />
           </Box>
 
-          {/* Title */}
+          {/* Page Title */}
           <Typography component="h1" variant="h4" align="center">
             Sign in to My Art Gallery
           </Typography>
@@ -127,6 +144,7 @@ export default function SignIn() {
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Sign in
             </Button>
+
             {/* Forgot Password Link */}
             <Link
               variant="body2"
@@ -137,7 +155,7 @@ export default function SignIn() {
             </Link>
           </Box>
 
-          {/* Forgot Password Dialog */}
+          {/* Forgot Password Modal */}
           <ForgotPassword
             open={openForgotPassword}
             handleClose={handleForgotPasswordClose}
@@ -145,7 +163,7 @@ export default function SignIn() {
 
           <Divider>or</Divider>
 
-          {/* Social Login */}
+          {/* Social Login Options */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               variant="outlined"
@@ -168,11 +186,7 @@ export default function SignIn() {
           {/* Sign Up Link */}
           <Typography align="center" sx={{ mt: 2 }}>
             Don&apos;t have an account?{' '}
-            <Link
-              variant="body2"
-              href="/sign-up"
-              sx={{ cursor: 'pointer' }}
-            >
+            <Link variant="body2" href="/sign-up" sx={{ cursor: 'pointer' }}>
               Sign up
             </Link>
           </Typography>
