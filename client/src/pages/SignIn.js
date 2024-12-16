@@ -15,6 +15,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import ForgotPassword from '../components/ForgotPassword';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -49,14 +50,27 @@ export default function SignIn() {
   const handleForgotPasswordOpen = () => setOpenForgotPassword(true);
   const handleForgotPasswordClose = () => setOpenForgotPassword(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
+  
+    const loginData = {
+      username: data.get('email'),
       password: data.get('password'),
-    });
-    alert('Sign in successful!');
+    };
+  
+    try {
+      const response = await axios.post('http://localhost:8083/api/lowCode/sys/login', loginData);
+      console.log('Login successful:', response.data);
+  
+      // Save token，go to Home
+      localStorage.setItem('token', response.data.token);
+      alert('Sign in successful!');
+      navigate('/'); // Go to Home
+    } catch (error) {
+      console.error('Login failed:', error);
+      alert('Login failed: Invalid username or password');
+    }
   };
 
   return (
