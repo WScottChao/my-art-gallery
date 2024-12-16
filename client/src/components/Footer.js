@@ -34,8 +34,7 @@ export default function Footer() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: { xs: 4, sm: 6 },
-          py: { xs: 6, sm: 8 },
+          gap: 2,
           textAlign: 'center',
         }}
       >
@@ -50,13 +49,20 @@ export default function Footer() {
             maxWidth: { xs: '100%', sm: '60%' },
           }}
         >
-          <Box component="img" src={logo} alt="My Art Gallery" sx={{ height: 40 }} />
-          <Typography variant="body2" sx={{ fontWeight: 600, mt: 2 }}>
-            Join the newsletter
+          
+          {/* Logo */}
+          <Box sx={{ mb: 0 }}>
+            <Box component="img" src={logo} alt="My Art Gallery" sx={{ height: 40 }} />
+          </Box>
+
+          {/* Newsletter */}
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            <strong>Join the newsletter</strong>
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
             Subscribe for weekly updates. Explore your favorite art.
           </Typography>
+
           <Stack direction="row" spacing={1} useFlexGap>
             <TextField
               id="email-newsletter"
@@ -88,7 +94,6 @@ export default function Footer() {
             display: 'flex',
             gap: 2,
             alignItems: 'center',
-            mt: 4,
           }}
         >
           <Link
@@ -129,6 +134,7 @@ export default function Footer() {
             gap: 2,
           }}
         >
+          
           {/* Privacy Policy and Terms */}
           <Box
             sx={{
