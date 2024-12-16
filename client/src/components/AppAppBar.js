@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/header-logo.png'; // Import logo
+import { AuthContext } from '../context/AuthContext';
 
 // Custom styles for the toolbar
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -26,11 +27,11 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state (replace with your auth logic)
+  const { authState, logout } = useContext(AuthContext);
 
   // Handle click for "My Collections"
   const handleMyCollectionsClick = () => {
-    if (isLoggedIn) {
+    if (authState?.isLoggedIn) {
       navigate('/my-collections'); // Redirect to "My Collections" if logged in
     } else {
       navigate('/sign-in'); // Redirect to "Sign In" if not logged in

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -11,9 +11,12 @@ import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import IconButton from '@mui/material/IconButton';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -67,7 +70,18 @@ export default function MainContent() {
   const [filteredArtworks, setFilteredArtworks] = useState([]);
   const [category, setCategory] = useState('All');
 
+  const [userCollection, setUserCollection] = useState(new Set());
+
+  const { authState } = useContext(AuthContext);
+
   const navigate = useNavigate();
+
+  const satoken = localStorage.getItem('token');
+
+  useEffect(() => {
+    fetchArtworks();
+    fetchUserCollection();
+  }, []);
 
   // Function to handle card click (navigate to details page)
   const handleCardClick = (artId) => {
@@ -102,9 +116,44 @@ export default function MainContent() {
     }
   };
 
-  useEffect(() => {
-    fetchArtworks();
-  }, []);
+  // Fetch user's liked art pieces
+  const fetchUserCollection = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8083/api/goview/object/getlike',
+        {
+          headers: { Authorization: `Bearer ${satoken}` },
+        }
+      );
+      const likedArtIDs = new Set(response.data.map((art) => art.id));
+      setUserCollection(likedArtIDs);
+    } catch (error) {
+      console.error('Error fetching user collection:', error);
+    }
+  };
+
+  // Toggle like/unlike
+  const handleLikeToggle = async (artId) => {
+    try {
+      if (userCollection.has(artId)) {
+        // If already liked, remove from collection
+        console.log('Already in collection');
+        alert('Already in collection');
+      } else {
+        // Add to collection
+        await axios.post(
+          'http://localhost:8083/api/goview/object/like',
+          { id: artId },
+          { headers: { Authorization: `Bearer ${satoken}` } }
+        );
+        setUserCollection((prev) => new Set(prev).add(artId));
+        alert('Added to My Collection!');
+      }
+    } catch (error) {
+      console.error('Error adding/removing artwork:', error);
+      alert('Failed to add to collection.');
+    }
+  };
 
   // Filter artworks based on category
   const handleCategoryClick = (selectedCategory) => {
@@ -125,6 +174,34 @@ export default function MainContent() {
       art.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredArtworks(filtered);
+  };
+
+  // Function to add an artwork to the collection
+  const handleAddToCollection = async (event, artId) => {
+    event.stopPropagation();
+    
+    // Check if the user is logged in
+    if (!authState?.token) {
+      alert('You need to login or sign up to collect this art piece.');
+      return; // Stop the process if not logged in
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8083/api/goview/object/like',
+        { id: artId }, // Send the artwork ID
+        {
+          headers: { Authorization: `Bearer ${authState.token}` }, // Send token in header
+        }
+      );
+      if (response.status === 200) {
+        alert('Added to your collection!');
+        setUserCollection((prev) => new Set(prev).add(artId)); // Update the user collection
+      }
+    } catch (error) {
+      console.error('Error adding to collection:', error);
+      alert('Failed to add artwork to collection.');
+    }
   };
 
   return (
@@ -167,19 +244,33 @@ export default function MainContent() {
       <Grid container spacing={3}>
         {filteredArtworks.map((artwork) => (
           <Grid item xs={12} sm={6} md={4} key={artwork.id}>
-            <StyledCard onClick={() => handleCardClick(artwork.id)}>
-              <CardMedia
-                component="img"
-                image={artwork.img}
-                alt={artwork.title}
-                sx={{ height: 200, objectFit: 'cover' }}
-              />
-              <StyledCardContent>
-                <Typography variant="subtitle1">{artwork.title}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {artwork.description}
-                </Typography>
-              </StyledCardContent>
+            <StyledCard onClick={() => handleCardClick(artwork.id)}> {/* Card Click */}
+              <Box sx={{ position: 'relative' }}>
+                {/* Artwork Image */}
+                <CardMedia
+                  component="img"
+                  image={artwork.img}
+                  alt={artwork.title}
+                  sx={{ height: 200, objectFit: 'cover' }}
+                />
+
+                {/* Like Button */}
+                <StyledCardContent>
+                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Typography variant="subtitle1">{artwork.title}</Typography>
+                    {/* Star Icon Button */}
+                    <IconButton
+                      color={userCollection.has(artwork.id) ? 'warning' : 'default'}
+                      onClick={(event) => handleAddToCollection(event, artwork.id)} // Pass event
+                    >
+                      {userCollection.has(artwork.id) ? <StarIcon /> : <StarBorderIcon />}
+                    </IconButton>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary">
+                    {artwork.description}
+                  </Typography>
+                </StyledCardContent>
+              </Box>
             </StyledCard>
           </Grid>
         ))}

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -14,6 +15,7 @@ import logo from '../assets/images/header-logo.png';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Import axios for API requests
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -39,19 +41,39 @@ const SignUpContainer = styled(Box)(({ theme }) => ({
 }));
 
 export default function SignUp() {
-    const navigate = useNavigate();
-    const handleLogoClick = () => {
-        navigate('/'); // Navigate back to the home page
-    };
-    const handleSubmit = (event) => {
-    event.preventDefault();
+  const navigate = useNavigate();
+
+  // Handle logo click to navigate back to the home page
+  const handleLogoClick = () => {
+    navigate('/'); // Navigate back to the home page
+  };
+
+  // Handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    alert('Account created successfully!');
+
+    const registerData = {
+      username: data.get('username'), // Collect the username
+      password: data.get('password'), // Collect the password
+      email: data.get('email'), // Collect the email
+    };
+
+    try {
+      // Send a POST request to the registration API
+      const response = await axios.post(
+        'http://localhost:8083/api/lowCode/sys/reg',
+        registerData
+      );
+      console.log('Registration successful:', response.data);
+
+      // Show a success alert and navigate to the sign-in page
+      alert('Account created successfully!');
+      navigate('/sign-in'); // Redirect to the sign-in page
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert('Registration failed: Please check your details and try again.');
+    }
   };
 
   return (
@@ -84,14 +106,17 @@ export default function SignUp() {
             noValidate
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
+            {/* Username Field */}
             <TextField
-              id="name"
-              label="Full Name"
-              name="name"
-              autoComplete="name"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               fullWidth
               required
             />
+
+            {/* Email Field */}
             <TextField
               id="email"
               label="Email"
@@ -100,6 +125,8 @@ export default function SignUp() {
               fullWidth
               required
             />
+
+            {/* Password Field */}
             <TextField
               id="password"
               label="Password"
@@ -109,10 +136,14 @@ export default function SignUp() {
               fullWidth
               required
             />
+
+            {/* Checkbox */}
             <FormControlLabel
               control={<Checkbox value="subscribe" color="primary" />}
               label="Subscribe to weekly updates"
             />
+
+            {/* Submit Button */}
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Sign up
             </Button>
