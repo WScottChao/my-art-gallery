@@ -14,20 +14,25 @@ export default function Home() {
       <CssBaseline />
 
       {/* Top Navigation Bar */}
-      <AppAppBar />
+      <AppAppBar 
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          height: '64px',
+        }}
+      />
 
       {/* Main Page Content */}
-      <Box
+       <Box
         component="main"
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh', // Ensures the content fills the full viewport height
-          pt: { xs: 10, sm: 12 }, // Adds top padding to prevent content from being hidden under the AppBar
-          pb: 4, // Adds bottom padding to ensure spacing above the Footer
+          flexGrow: 1,
+          minHeight: '100vh',
+          marginTop: '64px',
+          paddingBottom: '50px',
         }}
       >
-        <Container
+       <Container
           maxWidth="lg"
           sx={{
             flexGrow: 1, // Allows the container to expand and fill available space
@@ -36,16 +41,25 @@ export default function Home() {
             gap: 4, // Spacing between child components
           }}
         >
-          {/* Main Content Section */}
-          <MainContent />
+
+        <Box
+          sx={{
+            marginTop: '32px',
+            paddingX: 2,
+            paddingY: 4,
+          }}
+        >
+            {/* Main Content */}
+            <MainContent />
+        </Box>
 
           {/* Latest Updates Section */}
           <Latest />
+          
+          {/* Footer Section */}
+          <Footer />
         </Container>
-      </Box>
-
-      {/* Footer Section */}
-      <Footer />
+      </Box>     
     </>
   );
 }

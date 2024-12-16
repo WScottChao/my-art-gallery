@@ -43,6 +43,8 @@ export default function AppAppBar() {
       enableColorOnDark
       sx={{
         boxShadow: 0,
+        top: '10px',
+        height: '56px',
         bgcolor: 'transparent', // Transparent background
         backgroundImage: 'none',
       }}
