@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -8,8 +8,8 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import GitHubIcon from '@mui/icons-material/GitHub'; // Correct icon import
-import logo from '../assets/images/header-logo.png'; // Adjusted to match your project
+import GitHubIcon from '@mui/icons-material/GitHub';
+import logo from '../assets/images/header-logo.png';
 
 // Copyright Section
 function Copyright() {
@@ -26,6 +26,21 @@ function Copyright() {
 
 // Footer Component
 export default function Footer() {
+  const [successMessage, setSuccessMessage] = useState(''); // State to manage success message
+  const [email, setEmail] = useState(''); // State for email input
+
+  const handleSubscribe = () => {
+    const emailPattern = /\S+@\S+\.\S+/; 
+    if (email && emailPattern.test(email)) {
+      setSuccessMessage('Subscribed successfully!');
+      setEmail(''); // Clear the input field
+      setTimeout(() => setSuccessMessage(''), 5000); // Hide the message after 5 seconds
+    } else {
+      setSuccessMessage('Please enter a valid email address.');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    }
+  };
+
   return (
     <React.Fragment>
       <Divider />
@@ -38,6 +53,7 @@ export default function Footer() {
           textAlign: 'center',
         }}
       >
+
         {/* Newsletter Section */}
         <Box
           sx={{
@@ -71,12 +87,15 @@ export default function Footer() {
               fullWidth
               placeholder="Your email address"
               aria-label="Enter your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               sx={{ width: 250 }}
             />
             <Button
               variant="contained"
               color="primary"
               size="small"
+              onClick={handleSubscribe}
               sx={{
                 flexShrink: 0,
                 backgroundColor: '#C38154',
@@ -86,6 +105,14 @@ export default function Footer() {
               Subscribe
             </Button>
           </Stack>
+
+          {/* Success Message */}
+          {successMessage && (
+            <Typography variant="body2" sx={{ color: '#4CAF50', mt: 1 }}>
+              {successMessage}
+            </Typography>
+          )}
+
         </Box>
 
         {/* About Us and Contact Links */}

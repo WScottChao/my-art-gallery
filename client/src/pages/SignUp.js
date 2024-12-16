@@ -13,7 +13,6 @@ import { styled } from '@mui/material/styles';
 import logo from '../assets/images/header-logo.png';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import ForgotPassword from '../components/ForgotPassword';
 import { useNavigate } from 'react-router-dom';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -30,7 +29,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   boxShadow: theme.shadows[2],
 }));
 
-const SignInContainer = styled(Box)(({ theme }) => ({
+const SignUpContainer = styled(Box)(({ theme }) => ({
   height: '100vh',
   display: 'flex',
   alignItems: 'center',
@@ -39,30 +38,26 @@ const SignInContainer = styled(Box)(({ theme }) => ({
   background: theme.palette.background.default,
 }));
 
-export default function SignIn() {
-  const navigate = useNavigate();
-  const handleLogoClick = () => {
-    navigate('/'); // Navigate back to the home page
-  };
-  const [openForgotPassword, setOpenForgotPassword] = React.useState(false);
-
-  const handleForgotPasswordOpen = () => setOpenForgotPassword(true);
-  const handleForgotPasswordClose = () => setOpenForgotPassword(false);
-
-  const handleSubmit = (event) => {
+export default function SignUp() {
+    const navigate = useNavigate();
+    const handleLogoClick = () => {
+        navigate('/'); // Navigate back to the home page
+    };
+    const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      name: data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
     });
-    alert('Sign in successful!');
+    alert('Account created successfully!');
   };
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <SignInContainer>
+      <SignUpContainer>
         <StyledCard>
           {/* Logo with click handler */}
           <Box
@@ -79,16 +74,24 @@ export default function SignIn() {
 
           {/* Title */}
           <Typography component="h1" variant="h4" align="center">
-            Sign in to My Art Gallery
+            Sign up for My Art Gallery
           </Typography>
 
-          {/* Sign In Form */}
+          {/* Sign Up Form */}
           <Box
             component="form"
             onSubmit={handleSubmit}
             noValidate
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
+            <TextField
+              id="name"
+              label="Full Name"
+              name="name"
+              autoComplete="name"
+              fullWidth
+              required
+            />
             <TextField
               id="email"
               label="Email"
@@ -102,32 +105,18 @@ export default function SignIn() {
               label="Password"
               name="password"
               type="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               fullWidth
               required
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              control={<Checkbox value="subscribe" color="primary" />}
+              label="Subscribe to weekly updates"
             />
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Sign in
+              Sign up
             </Button>
-            {/* Forgot Password Link */}
-            <Link
-              variant="body2"
-              onClick={handleForgotPasswordOpen}
-              sx={{ cursor: 'pointer', textAlign: 'center' }}
-            >
-              Forgot password?
-            </Link>
           </Box>
-
-          {/* Forgot Password Dialog */}
-          <ForgotPassword
-            open={openForgotPassword}
-            handleClose={handleForgotPasswordClose}
-          />
 
           <Divider>or</Divider>
 
@@ -137,33 +126,33 @@ export default function SignIn() {
               variant="outlined"
               fullWidth
               startIcon={<GoogleIcon />}
-              onClick={() => alert('Google Sign In')}
+              onClick={() => alert('Sign up with Google')}
             >
-              Sign in with Google
+              Sign up with Google
             </Button>
             <Button
               variant="outlined"
               fullWidth
               startIcon={<FacebookIcon />}
-              onClick={() => alert('Facebook Sign In')}
+              onClick={() => alert('Sign up with Facebook')}
             >
-              Sign in with Facebook
+              Sign up with Facebook
             </Button>
           </Box>
 
-          {/* Sign Up Link */}
+          {/* Sign In Link */}
           <Typography align="center" sx={{ mt: 2 }}>
-            Don&apos;t have an account?{' '}
+            Already have an account?{' '}
             <Link
               variant="body2"
-              href="/sign-up"
+              href="/sign-in"
               sx={{ cursor: 'pointer' }}
             >
-              Sign up
+              Sign in
             </Link>
           </Typography>
         </StyledCard>
-      </SignInContainer>
+      </SignUpContainer>
     </React.Fragment>
   );
 }
