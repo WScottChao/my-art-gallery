@@ -132,29 +132,6 @@ export default function MainContent() {
     }
   };
 
-  // Toggle like/unlike
-  const handleLikeToggle = async (artId) => {
-    try {
-      if (userCollection.has(artId)) {
-        // If already liked, remove from collection
-        console.log('Already in collection');
-        alert('Already in collection');
-      } else {
-        // Add to collection
-        await axios.post(
-          'http://localhost:8083/api/goview/object/like',
-          { id: artId },
-          { headers: { Authorization: `Bearer ${satoken}` } }
-        );
-        setUserCollection((prev) => new Set(prev).add(artId));
-        alert('Added to My Collection!');
-      }
-    } catch (error) {
-      console.error('Error adding/removing artwork:', error);
-      alert('Failed to add to collection.');
-    }
-  };
-
   // Filter artworks based on category
   const handleCategoryClick = (selectedCategory) => {
     setCategory(selectedCategory);
