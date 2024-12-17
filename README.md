@@ -1,15 +1,22 @@
 # **My Art Gallery**
 
+
 A web application where users can explore, collect, and save art pieces from the Metropolitan Museum of Art API.
+
 
 ## Technologies Used
 The project uses the following technologies:
 
+
 ### 1. Front-end:
 React (with React Hooks for state management)
+
 React Router (for page navigation)
+
 Material UI (for modern UI components)
+
 Axios (for API requests)
+
 
 ### 2. Back-end API:
 ...
@@ -18,6 +25,7 @@ Axios (for API requests)
 Before running the project, ensure you have:
 
 Node.js and npm installed.
+
 Download Node.js here: https://nodejs.org/
 
 ## Installation and Setup
