@@ -20,10 +20,15 @@ Axios (for API requests)
 
 ### 2. Back-end API:
 Spring Boot: Project Framework
+
 MyBatis-Plus: database operations
+
 Redis: Cache Management
+
 Sa-Token: user authentication and login management
+
 RestTemplate: Calling the Metropolitan Museum API
+
 SQLite / MySQL: Database Storage
 
 
