@@ -1,0 +1,30 @@
+{
+    "code":200,
+    "data":[
+        {
+            "id":10001,
+            "label":"A",
+            "type":"synthesis"
+        },
+        {
+            "id":10002,
+            "label":"B",
+            "type":"synthesis"
+        },
+        {
+            "id":10003,
+            "label":"C",
+            "type":"synthesis"
+        },
+        {
+            "id":10004,
+            "label":"D",
+            "type":"synthesis"
+        },
+        {
+            "id":10005,
+            "label":"E",
+            "type":"synthesis"
+        }
+    ]
+}
