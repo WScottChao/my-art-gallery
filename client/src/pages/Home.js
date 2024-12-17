@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import AppAppBar from '../components/AppAppBar';
 import MainContent from '../components/MainContent';
-import Latest from '../components/Latest';
 import Footer from '../components/Footer';
 
 export default function Home() {
@@ -52,9 +51,6 @@ export default function Home() {
             {/* Main Content */}
             <MainContent />
         </Box>
-
-          {/* Latest Updates Section */}
-          <Latest />
           
           {/* Footer Section */}
           <Footer />

@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import Pagination from '@mui/material/Pagination';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -68,25 +69,19 @@ function SearchBar({ onSearch }) {
 export default function MainContent() {
   const [artworks, setArtworks] = useState([]);
   const [filteredArtworks, setFilteredArtworks] = useState([]);
-  const [category, setCategory] = useState('All');
-
   const [userCollection, setUserCollection] = useState(new Set());
+  const [category, setCategory] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   const { authState } = useContext(AuthContext);
-
   const navigate = useNavigate();
-
-  const satoken = localStorage.getItem('token');
+  const satoken = authState?.token || localStorage.getItem('token');
 
   useEffect(() => {
     fetchArtworks();
     fetchUserCollection();
   }, []);
-
-  // Function to handle card click (navigate to details page)
-  const handleCardClick = (artId) => {
-    navigate(`/art/${artId}`); // Pass the artwork ID to the details page
-  };
 
   // Fetch artworks from the Met API
   const fetchArtworks = async () => {
@@ -94,7 +89,10 @@ export default function MainContent() {
       const response = await axios.get(
         'https://collectionapi.metmuseum.org/public/collection/v1/objects'
       );
-      const objectIDs = response.data.objectIDs.slice(0, 12); // Fetch only 12 items
+      const objectIDs = response.data.objectIDs
+        .sort(() => Math.random() - 0.5) // Randomize the order
+        .slice(0, 90); // Fetch 36 random objects
+
       const artworkData = await Promise.all(
         objectIDs.map(async (id) => {
           const res = await axios.get(
@@ -116,6 +114,30 @@ export default function MainContent() {
     }
   };
 
+  // Handle recommendation section
+  const fetchRecommendations = async (page = 1) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8083/api/goview/object/recommend?page=${page}&limit=${itemsPerPage}`,
+        {
+          headers: { Authorization: `Bearer ${satoken}` },
+        }
+      );
+      const recommendedData = response.data.map((item) => ({
+        id: item.objectID,
+        img: item.primaryImageSmall || 'https://via.placeholder.com/400x300',
+        title: item.title || 'Untitled',
+        description: item.medium || 'No description available',
+      }));
+      setFilteredArtworks(recommendedData);
+      setCurrentPage(page); // Update the current page
+      setCategory('Recommend to You'); // Set the current category
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+    }
+  };
+  
+
   // Fetch user's liked art pieces
   const fetchUserCollection = async () => {
     try {
@@ -132,16 +154,38 @@ export default function MainContent() {
     }
   };
 
-  // Filter artworks based on category
+  // Add or remove from collection
+  const handleAddToCollection = async (event, artId) => {
+    event.stopPropagation();
+    
+    if (!satoken) {
+      alert('You need to login or sign up to collect this art piece.');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8083/api/goview/object/like',
+        { id: artId },
+        { headers: { Authorization: `Bearer ${satoken}` } }
+      );
+      if (response.status === 200) {
+        alert('Added to your collection!');
+        setUserCollection((prev) => new Set(prev).add(artId));
+      }
+    } catch (error) {
+      console.error('Error adding to collection:', error);
+      alert('Failed to add artwork to collection.');
+    }
+  };
+
+  // Handle category click
   const handleCategoryClick = (selectedCategory) => {
     setCategory(selectedCategory);
     if (selectedCategory === 'All') {
       setFilteredArtworks(artworks);
-    } else {
-      const filtered = artworks.filter(
-        (art) => art.category === selectedCategory
-      );
-      setFilteredArtworks(filtered);
+    } else if (selectedCategory === 'Recommend to You') {
+      fetchRecommendations();
     }
   };
 
@@ -153,36 +197,30 @@ export default function MainContent() {
     setFilteredArtworks(filtered);
   };
 
-  // Function to add an artwork to the collection
-  const handleAddToCollection = async (event, artId) => {
-    event.stopPropagation();
-    
-    // Check if the user is logged in
-    if (!authState?.token) {
-      alert('You need to login or sign up to collect this art piece.');
-      return; // Stop the process if not logged in
-    }
+  // Handle card click
+  const handleCardClick = (artId) => {
+    navigate(`/art/${artId}`);
+  };
 
-    try {
-      const response = await axios.post(
-        'http://localhost:8083/api/goview/object/like',
-        { id: artId }, // Send the artwork ID
-        {
-          headers: { Authorization: `Bearer ${authState.token}` }, // Send token in header
-        }
-      );
-      if (response.status === 200) {
-        alert('Added to your collection!');
-        setUserCollection((prev) => new Set(prev).add(artId)); // Update the user collection
-      }
-    } catch (error) {
-      console.error('Error adding to collection:', error);
-      alert('Failed to add artwork to collection.');
+  // Handle page change
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value); // Update the current page state
+    if (category === 'Recommend to You') {
+      fetchRecommendations(value); // Fetch recommendations for the new page
     }
   };
 
+  // Calculate artworks to display on the current page
+  const displayedArtworks = filteredArtworks.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      
       {/* Title Section */}
       <Box textAlign="center">
         <Typography variant="h2">My Art Gallery</Typography>
@@ -199,10 +237,10 @@ export default function MainContent() {
           gap: 2,
         }}
       >
+
         {/* Categories */}
         <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto' }}>
-          {['All', 'European Paintings', 'Sculpture', 'Modern Art', 'Drawings'].map(
-            (cat) => (
+          {['All', 'Recommend to You'].map((cat) => (
               <Chip
                 key={cat}
                 label={cat}
@@ -219,9 +257,10 @@ export default function MainContent() {
 
       {/* Art Pieces Grid */}
       <Grid container spacing={3}>
-        {filteredArtworks.map((artwork) => (
+        {displayedArtworks.map((artwork) => (
           <Grid item xs={12} sm={6} md={4} key={artwork.id}>
-            <StyledCard onClick={() => handleCardClick(artwork.id)}> {/* Card Click */}
+            {/* Card Click */}
+            <StyledCard onClick={() => handleCardClick(artwork.id)}> 
               <Box sx={{ position: 'relative' }}>
                 {/* Artwork Image */}
                 <CardMedia
@@ -252,6 +291,16 @@ export default function MainContent() {
           </Grid>
         ))}
       </Grid>
+
+      {/* Pagination */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', pt: 4 }}>
+        <Pagination
+          count={Math.ceil(artworks.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
+        </Box>
     </Box>
   );
 }
