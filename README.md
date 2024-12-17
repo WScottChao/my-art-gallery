@@ -1,4 +1,4 @@
-# My Art Gallery
+# **My Art Gallery**
 
 A web application where users can explore, collect, and save art pieces from the Metropolitan Museum of Art API.
 
