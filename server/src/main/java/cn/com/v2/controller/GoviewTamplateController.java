@@ -52,14 +52,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/goview/object")
 public class GoviewTamplateController extends BaseController {
-    @Autowired
-    private ISysFileService iSysFileService;
-    @Autowired
-    private V2Config v2Config;
-    @Autowired
-    private IGoviewProjectService iGoviewProjectService;
-    @Autowired
-    private IGoviewProjectDataService iGoviewProjectDataService;
+
     @Autowired
     private IGoviewTemplateService iGoviewTemplateService;
     @Autowired

@@ -19,7 +19,17 @@ Axios (for API requests)
 
 
 ### 2. Back-end API:
-Spring Boot
+Spring Boot: Project Framework
+
+MyBatis-Plus: database operations
+
+Redis: Cache Management
+
+Sa-Token: user authentication and login management
+
+RestTemplate: Calling the Metropolitan Museum API
+
+SQLite / MySQL: Database Storage
 
 
 ## Prerequisites
@@ -53,7 +63,11 @@ REACT_APP_API_BASE_URL=http://localhost:8083
 
 ### 4. Run the Development Server:
 
-npm start
+Front-end: npm start
+
+Back-end: put the goview_admin-0.0.1-SNAPSHOT.jar and goview.db under the same folder
+
+run the jar with java17, also run redis
 
 
 The application will run at:
@@ -102,8 +116,16 @@ Click the star icon on an artwork to save it to "My Collection."
 
 Navigate to "My Collection" to view your saved artworks.
 
+### Search for the artworks:
+
+Using the searching bar for finding artworks with names.
+
+### Personalized Recommender System:
+
+Possibility recommendations based on exhibits that have been in a person's personal collection, recommending exhibits that are more likely to be liked based on various dimensions of the exhibit and increasing weights
+
 
 _____________________________________________________________
 ### GITHUB LINK: https://github.com/WScottChao/my-art-gallery
 ### Sichao Wang sw6287@nyu.edu
-### Jianhao Ge @nyu.edu
+### Jianhao Ge jg7942@nyu.edu

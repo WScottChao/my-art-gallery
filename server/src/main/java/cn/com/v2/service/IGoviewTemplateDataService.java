@@ -1,6 +1,5 @@
 package cn.com.v2.service;
 
-import cn.com.v2.model.GoviewProjectData;
 import cn.com.v2.model.GoviewTemplateData;
 import com.baomidou.mybatisplus.extension.service.IService;
 

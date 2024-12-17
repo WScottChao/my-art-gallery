@@ -44,16 +44,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/goview")                 //控制任务相关的api
 public class GoviewTaskController extends BaseController {
-    @Autowired
-    private ISysFileService iSysFileService;
-    @Autowired
-    private V2Config v2Config;
-    @Autowired
-    private IGoviewTaskService iGoviewTaskService;
-    @Autowired
-    private IGoviewTemplateService iGoviewTemplateService;
-    @Autowired
-    private IGoviewProductService iGoviewProductService;
 
 
 }
