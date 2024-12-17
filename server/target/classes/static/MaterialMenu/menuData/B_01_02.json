@@ -1,0 +1,18 @@
+{
+    "dimensions": ["product", "data1"],
+    "source": [
+      {
+        "product": "Mon",
+        "data1": 120
+      },
+      {
+        "product": "Tue",
+        "data1": 200
+      },
+      {
+        "product": "Wed",
+        "data1": 150
+      }
+    ]
+  }
+  
