@@ -1,9 +1,67 @@
-# my-art-gallery
- 
+**#My Art Gallery#**
+
+A web application where users can explore, collect, and save art pieces from the Metropolitan Museum of Art API.
+
+**Technologies Used**
+The project uses the following technologies:
+
+1. Front-end:
+React (with React Hooks for state management)
+React Router (for page navigation)
+Material UI (for modern UI components)
+Axios (for API requests)
+
+2. Back-end API:
+...
+
+**Prerequisites**
+Before running the project, ensure you have:
+
+Node.js and npm installed.
+Download Node.js here: https://nodejs.org/
+
+**Installation and Setup**
+1. Clone the Repository:
+git clone <your-repository-url>
+cd my-art-gallery
+
+2. Install Dependencies:
+npm install
+
+3. Configure API URLs:
+Create a .env file at the root level and add the following configuration:
+REACT_APP_API_BASE_URL=http://localhost:8083
+
+4. Run the Development Server:
+npm start
+
+The application will run at:
+http://localhost:3000
+
+**How to Use**
+Sign Up:
+Go to /sign-up and create an account.
+![image](https://github.com/user-attachments/assets/754fcc21-c8cc-4797-8c66-2cb5b1dc2e38)
+
+Sign In:
+Log in with your registered credentials.
+![image](https://github.com/user-attachments/assets/59ac7046-4ded-4bf0-b2ae-89a5983d1a03)
+
+View Artworks:
+Explore random and recommended art pieces on the home page.
 ![image](https://github.com/user-attachments/assets/e9dbe63e-1031-4b36-badc-0d1949ec8964)
 
 ![image](https://github.com/user-attachments/assets/f3beb62a-48b4-4d9d-9e88-4e2c07b86156)
 
-![image](https://github.com/user-attachments/assets/754fcc21-c8cc-4797-8c66-2cb5b1dc2e38)
+Add to Collection:
+Click the star icon on an artwork to save it to "My Collection."
 
-![image](https://github.com/user-attachments/assets/59ac7046-4ded-4bf0-b2ae-89a5983d1a03)
+View "My Collection":
+Navigate to "My Collection" to view your saved artworks.
+
+ 
+
+
+
+
+
