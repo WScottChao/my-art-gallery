@@ -7,18 +7,15 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
-import FormControl from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import IconButton from '@mui/material/IconButton';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Pagination from '@mui/material/Pagination';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import SearchBar from './SearchBar';
+import CardItem from '../components/CardItem';
 
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -232,36 +229,14 @@ export default function MainContent() {
       <Grid container spacing={3}>
         {displayedArtworks.map((artwork) => (
           <Grid item xs={12} sm={6} md={4} key={artwork.id}>
-            {/* Card Click */}
-            <StyledCard onClick={() => handleCardClick(artwork.id)}> 
-              <Box sx={{ position: 'relative' }}>
-                {/* Artwork Image */}
-                <CardMedia
-                  component="img"
-                  image={artwork.img}
-                  alt={artwork.title}
-                  loading="lazy"
-                  sx={{ height: 200, objectFit: 'cover', backgroundColor: '#f0f0f0' }}
-                />
-
-                {/* Like Button */}
-                <StyledCardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="subtitle1">{artwork.title}</Typography>
-                    {/* Star Icon Button */}
-                    <IconButton
-                      color={userCollection.has(artwork.id) ? 'warning' : 'default'}
-                      onClick={(event) => handleAddToCollection(event, artwork.id)} // Pass event
-                    >
-                      {userCollection.has(artwork.id) ? <StarIcon /> : <StarBorderIcon />}
-                    </IconButton>
-                  </Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {artwork.description}
-                  </Typography>
-                </StyledCardContent>
-              </Box>
-            </StyledCard>
+            <CardItem
+              id={artwork.id}
+              img={artwork.img}
+              title={artwork.title}
+              description={artwork.description}
+              isCollected={userCollection.has(artwork.id)}
+              onAddToCollection={handleAddToCollection}
+            />
           </Grid>
         ))}
       </Grid>

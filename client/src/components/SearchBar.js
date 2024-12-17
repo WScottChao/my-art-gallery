@@ -5,7 +5,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
-const SearchBar = ({ onSearch }) => {
+  const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
