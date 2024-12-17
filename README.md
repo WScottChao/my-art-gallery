@@ -63,21 +63,21 @@ http://localhost:3000
 
 ## How to Use
 
-Sign Up:
+### Sign Up:
 
 Go to /sign-up and create an account.
 
 ![image](https://github.com/user-attachments/assets/59ac7046-4ded-4bf0-b2ae-89a5983d1a03)
 
 
-Sign In:
+### Sign In:
 
 Log in with your registered credentials.
 
 ![image](https://github.com/user-attachments/assets/754fcc21-c8cc-4797-8c66-2cb5b1dc2e38)
 
 
-View Artworks:
+### View Artworks:
 
 Explore random and recommended art pieces on the home page.
 
@@ -87,12 +87,12 @@ Explore random and recommended art pieces on the home page.
 ![image](https://github.com/user-attachments/assets/f3beb62a-48b4-4d9d-9e88-4e2c07b86156)
 
 
-Add to Collection:
+### Add to Collection:
 
 Click the star icon on an artwork to save it to "My Collection."
 
 
-View "My Collection":
+### View "My Collection":
 
 Navigate to "My Collection" to view your saved artworks.
 
