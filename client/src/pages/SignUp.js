@@ -42,6 +42,7 @@ const SignUpContainer = styled(Box)(({ theme }) => ({
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
 
   // Handle logo click to navigate back to the home page
   const handleLogoClick = () => {
@@ -53,11 +54,24 @@ export default function SignUp() {
     event.preventDefault(); // Prevent the default form submission behavior
     const data = new FormData(event.currentTarget);
 
-    const registerData = {
-      username: data.get('username'), // Collect the username
-      password: data.get('password'), // Collect the password
-      email: data.get('email'), // Collect the email
-    };
+    // Basic input validation
+    const username = data.get('username');
+    const email = data.get('email');
+    const password = data.get('password');
+
+    if (!username || !email || !password) {
+        alert('All fields are required.');
+        return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+    
+    setLoading(true);
+
+    const registerData = { username, password, email };
 
     try {
       // Send a POST request to the registration API
@@ -144,8 +158,14 @@ export default function SignUp() {
             />
 
             {/* Submit Button */}
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Sign up
+            <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={loading} // Disable button when loading
+            >
+                {loading ? 'Signing Up...' : 'Sign up'}
             </Button>
           </Box>
 

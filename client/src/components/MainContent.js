@@ -85,6 +85,15 @@ export default function MainContent() {
 
   // Fetch artworks from the Met API
   const fetchArtworks = async () => {
+    const cachedArtworks = localStorage.getItem('artworks');
+
+    if (cachedArtworks) {
+      const parsedArtworks = JSON.parse(cachedArtworks);
+      setArtworks(parsedArtworks); // Load cached data
+      setFilteredArtworks(parsedArtworks);
+      return;
+    }
+
     try {
       const response = await axios.get(
         'https://collectionapi.metmuseum.org/public/collection/v1/objects'
@@ -109,6 +118,7 @@ export default function MainContent() {
       );
       setArtworks(artworkData);
       setFilteredArtworks(artworkData);
+      localStorage.setItem('artworks', JSON.stringify(artworkData));
     } catch (error) {
       console.error('Error fetching artworks:', error);
     }
@@ -267,7 +277,8 @@ export default function MainContent() {
                   component="img"
                   image={artwork.img}
                   alt={artwork.title}
-                  sx={{ height: 200, objectFit: 'cover' }}
+                  loading="lazy"
+                  sx={{ height: 200, objectFit: 'cover', backgroundColor: '#f0f0f0' }}
                 />
 
                 {/* Like Button */}
