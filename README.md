@@ -67,14 +67,14 @@ Sign Up:
 
 Go to /sign-up and create an account.
 
-![image](https://github.com/user-attachments/assets/754fcc21-c8cc-4797-8c66-2cb5b1dc2e38)
+![image](https://github.com/user-attachments/assets/59ac7046-4ded-4bf0-b2ae-89a5983d1a03)
 
 
 Sign In:
 
 Log in with your registered credentials.
 
-![image](https://github.com/user-attachments/assets/59ac7046-4ded-4bf0-b2ae-89a5983d1a03)
+![image](https://github.com/user-attachments/assets/754fcc21-c8cc-4797-8c66-2cb5b1dc2e38)
 
 
 View Artworks:
