@@ -16,6 +16,7 @@ spring:
       max-wait: 40
       validation-query: SELECT 1
   redis:
+
     host: localhost         # Redis 主机地址
     port: 6379              # Redis 端口
     timeout: 60000          # 超时时间（单位: 毫秒）

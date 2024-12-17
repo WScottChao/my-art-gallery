@@ -28,6 +28,7 @@ F:\go-view-serve\src\main\java\cn\com\v2\model\GoviewTemplate.java
 F:\go-view-serve\src\main\java\cn\com\v2\service\impl\GoviewProjectDataServiceImpl.java
 F:\go-view-serve\src\main\java\cn\com\v2\service\IGoviewProjectDataService.java
 F:\go-view-serve\src\main\java\cn\com\v2\controller\GoviewTamplateController.java
+F:\go-view-serve\src\main\java\cn\com\v2\common\config\RedisConfig.java
 F:\go-view-serve\src\main\java\cn\com\v2\service\ISysFileService.java
 F:\go-view-serve\src\main\java\cn\com\v2\common\base\BaseController.java
 F:\go-view-serve\src\main\java\cn\com\v2\common\domain\AjaxResult.java
