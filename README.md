@@ -97,6 +97,8 @@ Get Big photos of Artwork and details below.
 
 Click the star icon on an artwork to save it to "My Collection."
 
+## GITHUB LINK: https://github.com/WScottChao/my-art-gallery
+
 
 ### View "My Collection":
 
