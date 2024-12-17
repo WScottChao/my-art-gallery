@@ -1,26 +1,26 @@
-**#My Art Gallery#**
+# My Art Gallery
 
 A web application where users can explore, collect, and save art pieces from the Metropolitan Museum of Art API.
 
-**Technologies Used**
+## Technologies Used
 The project uses the following technologies:
 
-1. Front-end:
+### 1. Front-end:
 React (with React Hooks for state management)
 React Router (for page navigation)
 Material UI (for modern UI components)
 Axios (for API requests)
 
-2. Back-end API:
+### 2. Back-end API:
 ...
 
-**Prerequisites**
+## Prerequisites
 Before running the project, ensure you have:
 
 Node.js and npm installed.
 Download Node.js here: https://nodejs.org/
 
-**Installation and Setup**
+## Installation and Setup
 1. Clone the Repository:
 git clone <your-repository-url>
 cd my-art-gallery
@@ -38,7 +38,7 @@ npm start
 The application will run at:
 http://localhost:3000
 
-**How to Use**
+## How to Use
 Sign Up:
 Go to /sign-up and create an account.
 ![image](https://github.com/user-attachments/assets/754fcc21-c8cc-4797-8c66-2cb5b1dc2e38)
