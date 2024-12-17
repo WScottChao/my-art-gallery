@@ -1,15 +1,12 @@
 package cn.com.v2.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import cn.com.v2.model.MetMuseumSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import cn.com.v2.common.base.BaseController;
@@ -21,6 +18,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/lowCode/sys")
@@ -150,6 +148,49 @@ public AjaxResult resetPassword(@RequestBody SysUser user) {
     }
 }
 
+     private static final String SEARCH_URL = "https://collectionapi.metmuseum.org/public/collection/v1/search";
+    private static final String OBJECT_URL = "https://collectionapi.metmuseum.org/public/collection/v1/objects/";
+    private final RestTemplate restTemplate = new RestTemplate();
 
+@GetMapping("/search")
+    public Map<String, Object> searchItems(@RequestParam("name") String name) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        try {
+            // 调用搜索 API 获取 objectIDs
+            String queryUrl = SEARCH_URL + "?q=" + name;
+            MetMuseumSearchResult searchResult = restTemplate.getForObject(queryUrl, MetMuseumSearchResult.class);
+
+            if (searchResult != null && searchResult.getObjectIDs() != null) {
+                // 获取前 20 个 objectID 的详细信息
+                List<String> objectIds = Arrays.stream(searchResult.getObjectIDs())
+                                               .limit(20) // 限制数量，避免过多请求
+                                               .map(String::valueOf)
+                                               .collect(Collectors.toList());
+
+                // 调用 Object API 获取详细信息
+                for (String objectId : objectIds) {
+                    try {
+                        String objectUrl = OBJECT_URL + objectId;
+                        Map<String, Object> objectDetails = restTemplate.getForObject(objectUrl, Map.class);
+                        if (objectDetails != null) {
+                            resultList.add(objectDetails);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Failed to fetch details for objectID: " + objectId);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error during search: " + e.getMessage());
+        }
+
+        // 返回结果
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", 200);
+        response.put("msg", "操作成功");
+        response.put("data", resultList);
+        return response;
+    }
 
 }

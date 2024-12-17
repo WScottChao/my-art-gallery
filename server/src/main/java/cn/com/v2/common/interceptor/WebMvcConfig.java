@@ -106,12 +106,13 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         .excludePathPatterns("/webjars/**")
         .excludePathPatterns("/doc.html/**")
         .excludePathPatterns("/api-docs/**")
+                .excludePathPatterns("/api/goview/**")
         .excludePathPatterns("/api/file/*");
 
         // 第二个拦截器配置
         registry.addInterceptor(new Interceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/error", "/error.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/api", "/api-docs", "/api-docs/**", "/doc.html/**", "/api/file/*");
+                .excludePathPatterns("/error", "/error.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/api-docs", "/api-docs/**", "/doc.html/**", "/api/file/*");
     }
 
 }
