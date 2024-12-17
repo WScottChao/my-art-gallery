@@ -97,11 +97,12 @@ Get Big photos of Artwork and details below.
 
 Click the star icon on an artwork to save it to "My Collection."
 
-## GITHUB LINK: https://github.com/WScottChao/my-art-gallery
-
 
 ### View "My Collection":
 
 Navigate to "My Collection" to view your saved artworks.
 
 
+### GITHUB LINK: https://github.com/WScottChao/my-art-gallery
+### Sichao Wang sw6287@nyu.edu
+### Jianhao Ge @nyu.edu
