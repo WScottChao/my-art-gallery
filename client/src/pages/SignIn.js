@@ -64,11 +64,6 @@ export default function SignIn() {
       password: data.get('password'),
     };
 
-  // Redirect to the home page when the logo is clicked
-  const handleLogoClick = () => {
-    navigate('/'); // Navigate to the home page
-  };
-
   if (!loginData.username || !loginData.password) {
     setErrorMessage('Email and password are required.');
     return;
@@ -94,7 +89,7 @@ export default function SignIn() {
       navigate('/'); // Redirect to the home page
     } catch (error) {
       setErrorMessage(
-        error.response?.data?.message || 'Invalid username or password.'
+        error.response?.data?.message || 'Invalid email or password.'
       );
     } finally {
       setLoading(false);
