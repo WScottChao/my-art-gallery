@@ -17,6 +17,7 @@ import ForgotPassword from '../components/ForgotPassword'; // Forgot password co
 import { useNavigate } from 'react-router-dom'; // For navigation
 import axios from 'axios'; // For API requests
 import { AuthContext } from '../context/AuthContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // Styled Card for the login form
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -60,16 +61,16 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
 
     const loginData = {
-      username: data.get('email'),
+      email: data.get('email'),
       password: data.get('password'),
     };
 
-  if (!loginData.username || !loginData.password) {
+  if (!loginData.email || !loginData.password) {
     setErrorMessage('Email and password are required.');
     return;
   }
 
-  if (!/\S+@\S+\.\S+/.test(loginData.username)) {
+  if (!/\S+@\S+\.\S+/.test(loginData.email)) {
     setErrorMessage('Please enter a valid email address.');
     return;
   }
@@ -81,9 +82,12 @@ export default function SignIn() {
       // Make POST request to the login API
       const response = await axios.post('http://localhost:8083/api/lowCode/sys/login', loginData);
       
+      const token = response.data.data.token.tokenValue; // Access the nested token
+      const email = response.data.data.userinfo.email; // Access email
+
       // Save the token to localStorage
-      localStorage.setItem('token', response.data.token);
-      login(response.data.username);
+      localStorage.setItem('token', token); // Save the token
+      login(email);
 
       alert('Sign in successful!'); // Show success message
       navigate('/'); // Redirect to the home page
@@ -157,8 +161,15 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Sign in
+
+            {loading && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
+            )}
+
+            <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign in'}
             </Button>
 
             {/* Forgot Password Link */}
