@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -48,33 +47,45 @@ export default function SignIn() {
   const navigate = useNavigate(); // For navigation
   const { login } = useContext(AuthContext);
 
-  // Redirect to the home page when the logo is clicked
-  const handleLogoClick = () => {
-    navigate('/'); // Navigate to the home page
-  };
+  const [loading, setLoading] = useState(false); // Loading state
+  const [errorMessage, setErrorMessage] = useState(''); // Error message state
 
-  // Forgot password modal state
-  const [openForgotPassword, setOpenForgotPassword] = React.useState(false);
-
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const handleForgotPasswordOpen = () => setOpenForgotPassword(true);
   const handleForgotPasswordClose = () => setOpenForgotPassword(false);
-
+  
   // Handle form submission for login
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent page refresh
+    event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    // Prepare login data for API request
     const loginData = {
       username: data.get('email'),
       password: data.get('password'),
     };
 
+  // Redirect to the home page when the logo is clicked
+  const handleLogoClick = () => {
+    navigate('/'); // Navigate to the home page
+  };
+
+  if (!loginData.username || !loginData.password) {
+    setErrorMessage('Email and password are required.');
+    return;
+  }
+
+  if (!/\S+@\S+\.\S+/.test(loginData.username)) {
+    setErrorMessage('Please enter a valid email address.');
+    return;
+  }
+
+  setLoading(true);
+  setErrorMessage(''); // Clear previous errors
+
     try {
       // Make POST request to the login API
       const response = await axios.post('http://localhost:8083/api/lowCode/sys/login', loginData);
-      console.log('Sign in successful:', response.data);
-
+      
       // Save the token to localStorage
       localStorage.setItem('token', response.data.token);
       login(response.data.username);
@@ -82,8 +93,11 @@ export default function SignIn() {
       alert('Sign in successful!'); // Show success message
       navigate('/'); // Redirect to the home page
     } catch (error) {
-      console.error('Sign in failed:', error);
-      alert('Sign in failed: Invalid username or password'); // Show error message
+      setErrorMessage(
+        error.response?.data?.message || 'Invalid username or password.'
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,7 +112,7 @@ export default function SignIn() {
           {/* Logo - Clickable to return to the home page */}
           <Box
             sx={{ display: 'flex', justifyContent: 'center', mb: 2, cursor: 'pointer' }}
-            onClick={handleLogoClick}
+            onClick={() => navigate('/')}
           >
             <Box
               component="img"
@@ -112,6 +126,13 @@ export default function SignIn() {
           <Typography component="h1" variant="h4" align="center">
             Sign in to My Art Gallery
           </Typography>
+
+          {/* Error Message */}
+          {errorMessage && (
+            <Typography color="error" variant="body2" align="center">
+              {errorMessage}
+            </Typography>
+          )}
 
           {/* Sign In Form */}
           <Box
