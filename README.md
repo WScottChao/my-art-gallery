@@ -103,6 +103,7 @@ Click the star icon on an artwork to save it to "My Collection."
 Navigate to "My Collection" to view your saved artworks.
 
 
+_____________________________________________________________
 ### GITHUB LINK: https://github.com/WScottChao/my-art-gallery
 ### Sichao Wang sw6287@nyu.edu
 ### Jianhao Ge @nyu.edu
