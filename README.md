@@ -87,6 +87,12 @@ Explore random and recommended art pieces on the home page.
 ![image](https://github.com/user-attachments/assets/f3beb62a-48b4-4d9d-9e88-4e2c07b86156)
 
 
+### Artwork Details Page:
+Get Big photos of Artwork and details below.
+
+![image](https://github.com/user-attachments/assets/6949ef6d-1981-449d-9997-1b29a936c5d5)
+
+
 ### Add to Collection:
 
 Click the star icon on an artwork to save it to "My Collection."
