@@ -18,6 +18,7 @@ import Pagination from '@mui/material/Pagination';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import SearchBar from './SearchBar';
 
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -35,36 +36,6 @@ const StyledCardContent = styled(CardContent)({
   flexDirection: 'column',
   gap: 2,
 });
-
-// Search Bar Component
-function SearchBar({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleSearch = () => {
-    onSearch(searchTerm);
-  };
-
-  return (
-    <FormControl sx={{ width: { xs: '100%', sm: '300px' } }} variant="outlined">
-      <OutlinedInput
-        size="small"
-        placeholder="Search…"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleSearch();
-          }
-        }}
-        startAdornment={
-          <InputAdornment position="start">
-            <SearchRoundedIcon fontSize="small" />
-          </InputAdornment>
-        }
-      />
-    </FormControl>
-  );
-}
 
 export default function MainContent() {
   const [artworks, setArtworks] = useState([]);
@@ -199,14 +170,6 @@ export default function MainContent() {
     }
   };
 
-  // Search functionality
-  const handleSearch = (searchTerm) => {
-    const filtered = artworks.filter((art) =>
-      art.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredArtworks(filtered);
-  };
-
   // Handle card click
   const handleCardClick = (artId) => {
     navigate(`/art/${artId}`);
@@ -262,7 +225,7 @@ export default function MainContent() {
         </Box>
 
         {/* Search Bar */}
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar />
       </Box>
 
       {/* Art Pieces Grid */}

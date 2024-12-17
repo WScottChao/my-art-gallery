@@ -6,6 +6,7 @@ import SignUp from './pages/SignUp';
 import ArtDetails from './pages/ArtDetails';
 import MyCollection from './pages/MyCollections';
 import ProtectedRoute from './components/ProtectedRoute';
+import SearchResult from './pages/SearchResult';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/art/:id" element={<ArtDetails />} />
+        <Route path="/search" element={<SearchResult />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
