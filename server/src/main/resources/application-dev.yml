@@ -1,0 +1,28 @@
+#dev环境  mysql7.0
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:goview.db
+
+    #linux服务器
+#    url: jdbc:sqlite://www/wwwroot/sqllite/goview.db
+    username: 
+    password: 
+    ### 连接池配置
+    druid:
+      initial-size: 10
+      max-active: 100
+      min-idle: 30
+      max-wait: 40
+      validation-query: SELECT 1
+  redis:
+
+    host: localhost         # Redis 主机地址
+    port: 6379              # Redis 端口
+    timeout: 60000          # 超时时间（单位: 毫秒）
+    lettuce:
+      pool:
+        max-active: 8       # 连接池最大连接数
+        max-idle: 8         # 连接池中的最大空闲连接
+        min-idle: 0         # 连接池中的最小空闲连接
+        max-wait: -1

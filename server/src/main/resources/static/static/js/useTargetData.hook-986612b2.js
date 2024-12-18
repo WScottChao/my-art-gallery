@@ -1,0 +1,1 @@
+import{u as a}from"./chartEditStore-56d3c83a.js";import{G as o}from"./index-9e787fa5.js";const u=()=>{const t=a();return{targetData:o(()=>{const e=t.getComponentList,r=t.fetchTargetIndex();return e[r]}),chartEditStore:t}};export{u};
